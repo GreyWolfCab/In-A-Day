@@ -6,11 +6,39 @@ radius = radius * 0.9;//reduce the clock size to be within the canvas
 
 let faceTotal = 24;
 
-drawClock();
-setInterval(drawClock, 30000);//update every half minute
-
 var displayDate = document.getElementById("date");
-displayCurrentDate();
+
+var clockfaceButton = document.getElementById("clockface-button");
+var clockfaceState = 0;
+
+drawClock();//initially draws clock
+setInterval(drawClock, 30000);//update every half minute
+displayCurrentDate();//initially display todays date
+
+function changeClockface() {
+    let type = clockfaceButton.textContent;
+
+    switch (type) {
+        case "24":
+            clockfaceButton.textContent = "A.M.";
+            clockfaceState = 1;
+            faceTotal = 12;
+            drawClock();
+            break;
+        case "A.M.":
+            clockfaceButton.textContent = "P.M.";
+            clockfaceState = 2;
+            faceTotal = 12;
+            drawClock();
+            break;
+        case "P.M.":
+            clockfaceButton.textContent = "24";
+            clockfaceState = 0;
+            faceTotal = 24;
+            drawClock();
+            break;
+    }
+}
 
 function displayCurrentDate() {
     let currentDate = new Date();
@@ -82,8 +110,25 @@ function drawTime(ctx, radius) {
     let now = new Date();
     let hour = now.getHours();
     let mins = now.getMinutes();
-    hour = (hour * Math.PI / (faceTotal/2)) + (mins * Math.PI / ((faceTotal/2)*60));//find the angle of the hour hand (include minutes passed)
-    drawHand(ctx, hour, radius*0.75, radius*0.04);//draw hand up to 75% radius
+    switch (clockfaceState) {
+        case 0://always draw hand for 24 hours state
+            hour = (hour * Math.PI / (faceTotal/2)) + (mins * Math.PI / ((faceTotal/2)*60));//find the angle of the hour hand (include minutes passed)
+            drawHand(ctx, hour, radius*0.75, radius*0.04);//draw hand up to 75% radius
+            break;
+        case 1://only draw hand if current hour is in the morning
+            if (hour < 12) {
+                hour = (hour * Math.PI / (faceTotal/2)) + (mins * Math.PI / ((faceTotal/2)*60));//find the angle of the hour hand (include minutes passed)
+                drawHand(ctx, hour, radius*0.75, radius*0.04);//draw hand up to 75% radius
+            }
+            break;
+        case 2://only draw hand if current hour is after noon
+            if (hour >= 12 && hour < 24) {
+                hour = (hour * Math.PI / (faceTotal/2)) + (mins * Math.PI / ((faceTotal/2)*60));//find the angle of the hour hand (include minutes passed)
+                drawHand(ctx, hour, radius*0.75, radius*0.04);//draw hand up to 75% radius
+            }
+            break;
+    }
+    
 }
 
 function drawHand(ctx, pos, length, width) {
