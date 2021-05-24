@@ -8,6 +8,8 @@ let faceTotal = 24;
 
 var displayDate = document.getElementById("date");
 
+var calendarButton = document.getElementById("calendar-button");
+
 var clockfaceButton = document.getElementById("clockface-button");
 var clockfaceState = 0;
 
@@ -40,28 +42,36 @@ function changeClockface() {
     }
 }
 
+function changeDate() {
+    let selectedDate = calendarButton.value;//parse date as YYYY-MM-DD
+    let year = parseInt(selectedDate.substring(0, 4), 10);
+    let month = parseInt(selectedDate.substring(5, 7), 10);//starts at 1
+    let day = parseInt(selectedDate.substring(8, 10), 10);
+    displayDate.innerText = day + " " + getMonth(month) + " " + year
+}
+
 function displayCurrentDate() {
     let currentDate = new Date();
     let day = currentDate.getDate();
     let month = currentDate.getMonth();//starts at 0
     let year = currentDate.getFullYear();
-    displayDate.innerText = day + " " + getMonth(month) + " " + year
+    displayDate.innerText = day + " " + getMonth(month+1) + " " + year
 }
 
 function getMonth(month) {
     switch (month) {
-        case 0: return "January";
-        case 1: return "February";
-        case 2: return "March";
-        case 3: return "April";
-        case 4: return "May";
-        case 5: return "June";
-        case 6: return "July";
-        case 7: return "August";
-        case 8: return "September";
-        case 9: return "October";
-        case 10: return "November";
-        case 11: return "December";
+        case 1: return "January";
+        case 2: return "February";
+        case 3: return "March";
+        case 4: return "April";
+        case 5: return "May";
+        case 6: return "June";
+        case 7: return "July";
+        case 8: return "August";
+        case 9: return "September";
+        case 10: return "October";
+        case 11: return "November";
+        case 12: return "December";
     }
 }
 

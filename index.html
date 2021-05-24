@@ -10,7 +10,7 @@
             <h1 id="date">Today's Date</h1>
             <div id="clockface-container">
                 <div id="clock-buttons">
-                    <button id="calendar-button">Calendar</button>
+                    <input type="date" id="calendar-button" onchange="changeDate()"></input>
                     <button id="clockface-button" onclick="changeClockface()">24</button>
                 </div>
                 <canvas id="clockface-canvas" width="500px" height="500px"></canvas>
